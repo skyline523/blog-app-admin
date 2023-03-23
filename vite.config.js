@@ -1,15 +1,37 @@
 import { defineConfig } from 'vite'
-import { resolve } from 'path'
 import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path'
+
+// 按需引入自动加载组件
+import Components from 'unplugin-vue-components/vite'
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
   const commonConfig = {
     base: './',
-    plugins: [vue()],
+    plugins: [
+      vue(),
+      Components({
+        resolvers: [NaiveUiResolver()]
+      })
+    ],
     resolve: {
       alias: {
         '@': resolve(__dirname, './src')
+      }
+    },
+    css: {
+      preprocessOptions: {
+        less: {
+          modifyVars: {
+            hack: `true; @import (reference) "${resolve(
+              'src/style/variables.less '
+            )}"`
+          },
+          math: 'strict',
+          javascriptEnabled: true
+        }
       }
     }
   }

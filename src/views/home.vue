@@ -1,10 +1,10 @@
 <template>
   <div>
-    <HelloWorld />
+    <HelloWorld msg="Welcome"/>
   </div>
 </template>
 
 <script setup name="Home">
-import HelloWorld from '@/components/HelloWorld'
+import HelloWorld from '@/components/HelloWorld.vue'
 </script>
 
