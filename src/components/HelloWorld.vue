@@ -4,6 +4,7 @@
   <div class="card">
     <button type="button" @click="handleIncrement">count is {{ count }}</button>
     <n-button @click="handleIncrement" type="info">Increment</n-button>
+    <n-button @click="onShowNotify" type="primary">Notify</n-button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR
@@ -27,9 +28,12 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useNotification } from 'naive-ui'
+
 import { useCounter } from '../store';
 
 const counterStore = useCounter()
+const notification = useNotification()
 
 defineProps({
   msg: String,
@@ -39,6 +43,15 @@ const count = computed(() => counterStore.count)
 
 const handleIncrement = () => {
   counterStore.accumulate()
+}
+
+const onShowNotify = () => {
+  notification.warning({
+    title: 'Hello World',
+    content: 'You can close this notify',
+    duration: 2000,
+    keepAliveOnHover: true
+  })
 }
 </script>
 
