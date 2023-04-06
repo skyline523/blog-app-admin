@@ -1,10 +1,11 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import { resolve } from 'path'
+import { defineConfig } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import { resolve } from 'path';
 
 // 按需引入自动加载组件
-import Components from 'unplugin-vue-components/vite'
-import { NaiveUiResolver } from 'unplugin-vue-components/resolvers'
+import Components from 'unplugin-vue-components/vite';
+import { NaiveUiResolver, VuetifyResolver } from 'unplugin-vue-components/resolvers';
+import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
@@ -12,29 +13,28 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     base: './',
     plugins: [
       vue(),
+      vuetify({ autoImport: true }),
       Components({
-        resolvers: [NaiveUiResolver()]
-      })
+        resolvers: [NaiveUiResolver()],
+      }),
     ],
     resolve: {
       alias: {
-        '@': resolve(__dirname, './src')
-      }
+        '@': resolve(__dirname, './src'),
+      },
     },
     css: {
       preprocessOptions: {
         less: {
           modifyVars: {
-            hack: `true; @import (reference) "${resolve(
-              'src/style/variables.less '
-            )}"`
+            hack: `true; @import (reference) "${resolve('src/style/variables.less ')}"`,
           },
           math: 'strict',
-          javascriptEnabled: true
-        }
-      }
-    }
-  }
+          javascriptEnabled: true,
+        },
+      },
+    },
+  };
 
   if (command === 'serve') {
     return {
@@ -49,11 +49,16 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         open: true,
         // 允许跨域
         cors: true,
-        // 自定义代理柜子
-        proxy: {}
+        // 自定义代理
+        proxy: {
+          '/api': {
+            target: 'http://localhost:5000',
+            rewrite: (path) => path.replace(/^\/api/, ''),
+          },
+        },
       },
-      ...commonConfig
-    }
+      ...commonConfig,
+    };
   } else {
     // command === 'build'
     return {
@@ -65,9 +70,9 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         // chunk 大小警告的限制 kbs
         chunkSizeWarningLimit: 2000,
         // 是否启用gzip压缩大小报告
-        reportCompressedSize: false
+        reportCompressedSize: false,
       },
-      ...commonConfig
-    }
+      ...commonConfig,
+    };
   }
-})
+});

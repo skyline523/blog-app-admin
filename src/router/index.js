@@ -1,8 +1,25 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
-import baseRouters from './modules/base'
+import baseRouter from './modules/base';
 
-const routes = [...baseRouters]
+const constantRouter = [
+  {
+    path: '/',
+    name: '',
+    redirect: '/home',
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/login/index.vue'),
+    meta: {
+      layout: 'login',
+      title: '登录页',
+    },
+  },
+];
+
+const routes = [...baseRouter, ...constantRouter];
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -11,9 +28,9 @@ const router = createRouter({
     return {
       el: '#app',
       top: 0,
-      behavior: 'smooth'
-    }
-  }
-})
+      behavior: 'smooth',
+    };
+  },
+});
 
-export default router
+export default router;

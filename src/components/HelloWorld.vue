@@ -10,6 +10,7 @@
       <code>components/HelloWorld.vue</code> to test HMR
     </p>
     <router-link to="/about">About</router-link>
+    <v-btn @click="handleIncrement">Vuetify Button</v-btn>
   </div>
 
   <p>
@@ -56,7 +57,4 @@ const onShowNotify = () => {
 </script>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
-}
 </style>

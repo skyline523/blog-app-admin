@@ -2,9 +2,8 @@ import axios from 'axios';
 import { useNotification } from 'naive-ui';
 
 const notification = useNotification();
-
 const instance = axios.create({
-  baseURL: process.env.API_BASE_URL,
+  baseURL: 'http://localhost:5000/api',
   timeout: 10000,
   withCredentials: true,
 });
@@ -50,20 +49,11 @@ instance.interceptors.response.use(
   },
   (error) => {
     if (!!error.message) {
-      const errorMap = {
-        timeout: '网络请求超时，请稍候重试',
-        404: '糟糕页面丢失了，请稍候重试',
-        500: '当前服务异常，请稍候重试',
-      };
       notification({
-        title: error.message,
-        content: errorMap[error.message],
+        title: '网络错误',
+        content: error.message,
       });
-    } else {
-      notification({
-        title: '000',
-        content: '当前网络繁忙' + error.message,
-      });
+      console.log(error);
     }
 
     return Promise.reject(error);
