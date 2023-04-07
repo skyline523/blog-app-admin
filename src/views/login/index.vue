@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card_wrapper">
-      <v-card :loading="isLoading" class="elevation-16 pa-6">
+      <v-card class="elevation-16 pa-6">
         <v-card-title class="d-flex flex-column justify-center align-center mb-8">
           <img class="w-25 h-auto" src="https://cdn.vuetifyjs.com/images/logos/v-alt.svg">
           <p class="text-h4">Welcome Login</p>
@@ -15,7 +15,7 @@
               :rules="emailRules"
               label="邮箱"
               type="email"
-              prepend-inner-icon="mdi-account"
+              prepend-inner-icon="mdi-email"
               variant="solo"
             ></v-text-field>
 
@@ -33,6 +33,7 @@
             ></v-text-field>
             <v-btn
               block
+              :loading="isLoading"
               :disabled="isLoading"
               size="large"
               class="mt-6 text-none"
@@ -43,7 +44,7 @@
         </v-card-text>
         
         <v-card-text class="d-flex flex-column align-center mt-4">
-          <p class="text-caption">或者使用 OAuth 登录(暂不可以)</p>
+          <p class="text-caption">或者使用 OAuth 登录(暂不可用)</p>
           <v-divider class="mt-2 mb-4 w-100"/>
           <div class="d-flex justify-center">
             <v-btn icon="mdi-google" class="mx-2" />
@@ -59,7 +60,9 @@
 <script setup name="Login">
 import { ref, reactive } from 'vue'
 
-import { register } from '@/api/user'
+import { useUserStore } from '@/store/modules/user'
+
+const userStore = useUserStore()
 
 const isLoading = ref(false)
 const form = ref()
@@ -82,9 +85,8 @@ const handleSubmit = async () => {
       email: email.value,
       password: password.value
     }
-    const { data } = await register(payload)
-    console.log(data)
-    if (data.code === 'success')
+    await userStore.login(payload)
+
     isLoading.value = false
   }
 }

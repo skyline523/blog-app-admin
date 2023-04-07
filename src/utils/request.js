@@ -1,16 +1,28 @@
 import axios from 'axios';
-import { useNotification } from 'naive-ui';
+import { useRouter } from 'vue-router';
 
-const notification = useNotification();
+// 全局提示框
+import { useSnackbarStore } from '@/store/modules/snackbar';
+const snackbarStore = useSnackbarStore();
+const router = useRouter();
+
+let API_BASE_URL = '';
+
+if (import.meta.env.MODE === 'development') {
+  API_BASE_URL = 'http://localhost:5000/api';
+} else if ((import.meta.env.MODE = 'production')) {
+  API_BASE_URL = 'http://localhost:5000/api/2';
+}
+
 const instance = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 10000,
   withCredentials: true,
 });
 
 instance.interceptors.request.use(
   (config) => {
-    const token = sessionStorage.getItem('token') || '';
+    const token = sessionStorage.getItem('TOKEN_KEY') || '';
 
     config.headers = {
       Accept: 'application/json',
@@ -27,31 +39,25 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
-    if (response.status !== 200) {
-      if (response.status === 401) {
-        notification.error({
-          title: '401',
-          content: '登录失效，请重新登录',
+    const { status, data } = response;
+    if (status === 200) {
+      if (data.code >= 400 && data.code <= 500) {
+        snackbarStore.open({
+          content: data.message,
+          color: 'red',
         });
-      } else if (response.status === 403) {
-        notification.error({
-          title: '403',
-          content: '无权访问',
-        });
-      } else {
-        notification.error({
-          title: '000',
-          content: '未知错误，请联系管理员',
-        });
+        if (data.code === 401) {
+          router.replace('/login');
+        }
       }
-      return Promise.resolve(response);
     }
+    return Promise.resolve(data);
   },
   (error) => {
     if (!!error.message) {
-      notification({
-        title: '网络错误',
-        content: error.message,
+      snackbarStore.open({
+        content: '请求出错',
+        color: 'red',
       });
       console.log(error);
     }

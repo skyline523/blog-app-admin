@@ -9,6 +9,7 @@ import vuetify from 'vite-plugin-vuetify';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
+  console.log(command, mode, ssrBuild);
   const commonConfig = {
     base: './',
     plugins: [
@@ -53,6 +54,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
         proxy: {
           '/api': {
             target: 'http://localhost:5000',
+            changeOrigin: true,
             rewrite: (path) => path.replace(/^\/api/, ''),
           },
         },
