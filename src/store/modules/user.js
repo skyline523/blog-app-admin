@@ -66,7 +66,7 @@ export const useUserStore = defineStore('user', {
           content: '登录成功',
           color: 'blue',
         });
-        // 是否跳转：从登录页进入获取用户信息需要跳转；刷新页面获取用户信息不需要跳转
+        // 是否跳转：从登录页进入需要跳转；刷新页面不需要跳转
         if (isGoto) {
           router.replace('/');
         }

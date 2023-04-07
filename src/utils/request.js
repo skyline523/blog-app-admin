@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 // 全局提示框
+import pinia from '@/store';
 import { useSnackbarStore } from '@/store/modules/snackbar';
-const snackbarStore = useSnackbarStore();
+const snackbarStore = useSnackbarStore(pinia);
+
 const router = useRouter();
 
 let API_BASE_URL = '';

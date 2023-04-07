@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 import baseRouter from './modules/base';
+import { useUserStore } from '@/store/modules/user';
 
 const constantRouter = [
   {
@@ -31,6 +32,17 @@ const router = createRouter({
       behavior: 'smooth',
     };
   },
+});
+
+router.beforeEach((to, from, next) => {
+  const userStore = useUserStore();
+  const token = userStore.token;
+
+  if (token || to.name === 'Login') {
+    next();
+  } else {
+    next({ name: 'Login' });
+  }
 });
 
 export default router;
