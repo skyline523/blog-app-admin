@@ -52,24 +52,27 @@ export const useUserStore = defineStore('user', {
 
       if (res.code === 200) {
         this.setToken(res.data.token);
-        this.afterLoginAction(true);
+        snackbarStore.open({
+          content: '登录成功',
+          color: 'blue',
+        });
+
+        // this.afterLoginAction(true);
+        return Promise.resolve();
       }
     },
-    async afterLoginAction(isGoto) {
+    async afterLoginAction() {
       if (!this.getToken) return null;
 
       const res = await getUserInfo();
 
       if (res.code === 200) {
         this.setUserInfo(res.data);
-        snackbarStore.open({
-          content: '登录成功',
-          color: 'blue',
-        });
+
         // 是否跳转：从登录页进入需要跳转；刷新页面不需要跳转
-        if (isGoto) {
-          router.replace('/');
-        }
+        // if (isGoto) {
+        //   router.replace('/');
+        // }
       }
     },
     logout() {

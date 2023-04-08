@@ -1,12 +1,11 @@
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import router from '@/router';
 
-// 全局提示框
 import pinia from '@/store';
+import { useUserStore } from '@/store/modules/user';
 import { useSnackbarStore } from '@/store/modules/snackbar';
-const snackbarStore = useSnackbarStore(pinia);
 
-const router = useRouter();
+const snackbarStore = useSnackbarStore(pinia);
 
 let API_BASE_URL = '';
 
@@ -41,16 +40,19 @@ instance.interceptors.request.use(
 
 instance.interceptors.response.use(
   (response) => {
+    const userStore = useUserStore();
     const { status, data } = response;
     if (status === 200) {
       if (data.code >= 400 && data.code <= 500) {
+        if (data.code === 401) {
+          userStore.resetState();
+          sessionStorage.removeItem('TOKEN_KEY');
+          router.replace('/login');
+        }
         snackbarStore.open({
           content: data.message,
           color: 'red',
         });
-        if (data.code === 401) {
-          router.replace('/login');
-        }
       }
     }
     return Promise.resolve(data);

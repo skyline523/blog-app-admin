@@ -59,10 +59,12 @@
 
 <script setup name="Login">
 import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 import { useUserStore } from '@/store/modules/user'
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const isLoading = ref(false)
 const form = ref()
@@ -85,7 +87,9 @@ const handleSubmit = async () => {
       email: email.value,
       password: password.value
     }
-    await userStore.login(payload)
+    await userStore.login(payload).then(() => {
+      router.replace('/')
+    })
 
     isLoading.value = false
   }

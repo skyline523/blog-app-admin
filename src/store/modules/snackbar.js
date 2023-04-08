@@ -6,7 +6,7 @@ export const useSnackbarStore = defineStore('snackbar', {
     color: '',
     visible: false,
     showClose: true,
-    timeout: 5000,
+    timeout: 2500,
   }),
   actions: {
     async open(options) {
