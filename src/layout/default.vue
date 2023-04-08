@@ -2,7 +2,7 @@
   <v-layout>
     <v-navigation-drawer
       theme="dark"
-      color="#111827"
+      color="#1C2536"
       class="px-2"
       width="280"
     >
@@ -25,6 +25,7 @@
             :value="item.path"
             :to="item.path"
             active-class="active-router"
+            class="rounded-lg"
           >
             <template v-slot:prepend>
               <v-icon :icon="item.meta.icon" class="mr-3"></v-icon>
