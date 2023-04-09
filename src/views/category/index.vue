@@ -1,9 +1,7 @@
 <template>
-  <v-layout>
-    Category
-  </v-layout>
+  <page-layout> category </page-layout>
 </template>
 
-<script setup name="Category">
-
+<script setup>
+import PageLayout from '@/components/PageLayout.vue';
 </script>

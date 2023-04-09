@@ -1,4 +1,4 @@
-const { defineConfig } = require('eslint-define-config')
+const { defineConfig } = require('eslint-define-config');
 
 module.exports = defineConfig({
   root: true,
@@ -6,7 +6,7 @@ module.exports = defineConfig({
     browser: true,
     node: true,
     jest: true,
-    es6: true
+    es6: true,
   },
   plugins: ['vue'],
   parser: 'vue-eslint-parser',
@@ -15,15 +15,15 @@ module.exports = defineConfig({
     sourceType: 'module',
     allowImportExportEverywhere: true,
     ecmaFeatures: {
-      jsx: true
-    }
+      jsx: true,
+    },
   },
   extends: [
     'eslint-config-airbnb-base',
     'eslint:recommended',
     'plugin:vue/vue3-essential',
     'plugin:vue/vue3-recommended',
-    'plugin:prettier/recommended'
+    'plugin:prettier/recommended',
   ],
   rules: {
     // 禁止使用多余的包
@@ -89,6 +89,8 @@ module.exports = defineConfig({
     // 强制箭头函数的箭头前后使用一致的空格
     'arrow-spacing': 'error',
     // 只强制对象解构，不强制数组解构
-    'prefer-destructuring': ['error', { object: true, array: false }]
-  }
-})
+    'prefer-destructuring': ['error', { object: true, array: false }],
+    // vue组件不需要强制使用多单词命名组件
+    'vue/multi-word-component-names': 0,
+  },
+});

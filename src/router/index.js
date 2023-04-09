@@ -1,6 +1,13 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
+import nProgress from 'nprogress';
 
 import { useUserStore } from '@/store/modules/user';
+
+import 'nprogress/nprogress.css';
+
+nProgress.configure({
+  showSpinner: false,
+});
 
 const constantRouter = [
   {
@@ -26,7 +33,7 @@ export const asyncRouter = [
     component: () => import('@/views/home.vue'),
     meta: {
       title: '首页',
-      icon: 'mdi-view-dashboard',
+      icon: 'mdi-view-dashboard-outline',
     },
   },
   {
@@ -35,7 +42,7 @@ export const asyncRouter = [
     component: () => import('@/views/post/index.vue'),
     meta: {
       title: '文章',
-      icon: 'mdi-post',
+      icon: 'mdi-post-outline',
     },
   },
   {
@@ -44,7 +51,7 @@ export const asyncRouter = [
     component: () => import('@/views/tag/index.vue'),
     meta: {
       title: '标签',
-      icon: 'mdi-tag',
+      icon: 'mdi-tag-outline',
     },
   },
   {
@@ -53,7 +60,7 @@ export const asyncRouter = [
     component: () => import('@/views/category/index.vue'),
     meta: {
       title: '分类',
-      icon: 'mdi-archive',
+      icon: 'mdi-archive-outline',
     },
   },
   {
@@ -62,12 +69,12 @@ export const asyncRouter = [
     component: () => import('@/views/about.vue'),
     meta: {
       title: '关于',
-      icon: 'mdi-account',
+      icon: 'mdi-account-outline',
     },
   },
 ];
 
-const routes = [...asyncRouter, ...constantRouter];
+const routes = [...constantRouter, ...asyncRouter];
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -82,6 +89,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  nProgress.start();
+
   const userStore = useUserStore();
   const token = userStore.getToken;
 
@@ -91,6 +100,10 @@ router.beforeEach((to, from, next) => {
     userStore.resetState();
     next({ name: 'Login' });
   }
+});
+
+router.afterEach(() => {
+  nProgress.done();
 });
 
 export default router;

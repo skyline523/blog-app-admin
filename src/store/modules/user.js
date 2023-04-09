@@ -46,6 +46,7 @@ export const useUserStore = defineStore('user', {
       this.userInfo = null;
       this.menus = [];
       this.sessionTimeout = false;
+      sessionStorage.clear();
     },
     async login(payload) {
       const res = await login(payload);

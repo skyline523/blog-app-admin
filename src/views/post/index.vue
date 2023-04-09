@@ -1,9 +1,7 @@
 <template>
-  <v-layout>
-    Post
-  </v-layout>
+  <page-layout> post </page-layout>
 </template>
 
-<script setup name="Post">
-
+<script setup>
+import PageLayout from '@/components/PageLayout.vue';
 </script>

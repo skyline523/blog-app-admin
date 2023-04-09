@@ -4,8 +4,9 @@ import { resolve } from 'path';
 
 // 按需引入自动加载组件
 import Components from 'unplugin-vue-components/vite';
-import { NaiveUiResolver, VuetifyResolver } from 'unplugin-vue-components/resolvers';
+import { NaiveUiResolver } from 'unplugin-vue-components/resolvers';
 import vuetify from 'vite-plugin-vuetify';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode, ssrBuild }) => {
@@ -14,6 +15,7 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
     base: './',
     plugins: [
       vue(),
+      vueSetupExtend(),
       vuetify({ autoImport: true }),
       Components({
         resolvers: [NaiveUiResolver()],
@@ -61,20 +63,19 @@ export default defineConfig(({ command, mode, ssrBuild }) => {
       },
       ...commonConfig,
     };
-  } else {
-    // command === 'build'
-    return {
-      build: {
-        // 设置最终构建的浏览器兼容目标
-        target: 'es2015',
-        // 构建后是否生成 source map 文件
-        sourcemap: false,
-        // chunk 大小警告的限制 kbs
-        chunkSizeWarningLimit: 2000,
-        // 是否启用gzip压缩大小报告
-        reportCompressedSize: false,
-      },
-      ...commonConfig,
-    };
   }
+  // command === 'build'
+  return {
+    build: {
+      // 设置最终构建的浏览器兼容目标
+      target: 'es2015',
+      // 构建后是否生成 source map 文件
+      sourcemap: false,
+      // chunk 大小警告的限制 kbs
+      chunkSizeWarningLimit: 2000,
+      // 是否启用gzip压缩大小报告
+      reportCompressedSize: false,
+    },
+    ...commonConfig,
+  };
 });

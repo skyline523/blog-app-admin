@@ -1,24 +1,25 @@
 <template>
   <v-app>
-    <n-notification-provider placement="bottom-right">
-      <component :is="layout" />
-    </n-notification-provider>
+    <component :is="layout" />
     <Snackbar />
   </v-app>
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
-import Snackbar from '@/components/Snackbar.vue'
+import Snackbar from '@/components/Snackbar.vue';
 
-const route = useRoute()
+const route = useRoute();
 
 const layout = computed(() => {
-  return (route.meta.layout || 'default') + '-layout'
-})
+  return `${route.meta.layout || 'default'}-layout`;
+});
 </script>
 
-<style scoped>
+<style>
+#progress .bar {
+  background: red !important;
+}
 </style>

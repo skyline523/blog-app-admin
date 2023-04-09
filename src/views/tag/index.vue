@@ -1,9 +1,7 @@
 <template>
-  <v-layout>
-    123
-  </v-layout>
+  <page-layout> 122 </page-layout>
 </template>
 
-<script setup name="Tag">
-
+<script setup>
+import PageLayout from '@/components/PageLayout.vue';
 </script>
