@@ -19,6 +19,7 @@
           :key="index"
           :value="item.path"
           :to="item.path"
+          :active="item.path === route.path"
           active-class="active-router"
           class="rounded-lg"
         >
@@ -33,7 +34,7 @@
 
     <v-main>
       <div class="pa-4 app-main">
-        <v-app-bar :elevation="0" color="#fafafa">
+        <v-app-bar :elevation="0">
           <template #prepend>
             <v-tooltip text="搜索" location="bottom">
               <template #activator="{ props }">
@@ -78,11 +79,13 @@
 
 <script setup>
 import { onMounted, reactive, computed } from 'vue';
+import { useRoute } from 'vue-router'
 
 import { useUserStore } from '@/store/modules/user';
 import { asyncRouter } from '@/router';
 
 const userStore = useUserStore();
+const route = useRoute()
 
 const userInfo = computed(() => userStore.userInfo);
 
@@ -100,8 +103,9 @@ const Logout = () => {
 .app-main {
   width: 100%;
   height: 100%;
-  background: #fafafa;
+  background: rgb(255 255 255 / 80%);
 }
+
 
 .user-menu {
   width: 200px;

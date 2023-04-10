@@ -19,7 +19,4 @@ const layout = computed(() => {
 </script>
 
 <style>
-#progress .bar {
-  background: red !important;
-}
 </style>

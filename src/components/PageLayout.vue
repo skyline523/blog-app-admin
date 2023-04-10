@@ -1,26 +1,29 @@
 <template>
   <v-layout class="container">
     <div class="header">
-      <v-breadcrumbs :items="matchedRoutes" bg-color="#fff">
-        <template #title="{ item }">
-          <v-btn variant="text" size="x-small" class="pa-0" @click="handlePush(item.path)">{{ item.meta.title }}</v-btn>
-        </template>
-        <template #divider>
-          <v-icon icon="mdi-circle-small"></v-icon>
-        </template>
-        <!-- <v-breadcrumbs-title>
-          <router-link to="/" class="link">首页</router-link>
-        </v-breadcrumbs-title>
-        <v-breadcrumbs-title>
-          <router-link to="/" class="link">首页</router-link>
-        </v-breadcrumbs-title> -->
-        <!-- <div v-for="item in matchedRoutes" :key="item.path">
-          <v-icon icon="mdi-circle-small"></v-icon>
-          <v-breadcrumbs-title :to="item.path">
-            <router-link :to="item.path" class="link">{{ item.meta.title }}</router-link>
-          </v-breadcrumbs-title>
-        </div> -->
-      </v-breadcrumbs>
+      <div class="header_title">文章管理</div>
+      <div class="breadcrumb">
+        <div class="breadcrumb_item">
+          <div class="breadcrumb_item_title">
+            <v-btn size="small" variant="text" to="/dashboard">
+              首页
+            </v-btn>
+          </div>
+        </div>
+        <div class="breadcrumb_item" v-for="(item, index) in matchedRoutes" :key="index">
+          <div class="breadcrumb_divider">
+            <v-icon icon="mdi-circle-small"></v-icon>
+          </div>
+          <div class="breadcrumb_item_title">
+            <v-btn
+              size="small"
+              variant="text"
+              :disabled="index === matchedRoutes.length - 1"
+              @click="handlePush(item.path)"
+            >{{ item.meta.title }}</v-btn>
+          </div>
+        </div>
+      </div>
     </div>
     <v-main>
       <slot />
@@ -33,16 +36,7 @@ import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
-const matchedRoutes = route.matched.map((item) => ({
-  meta: item.meta,
-  name: item.name,
-  path: item.path,
-}));
-matchedRoutes.unshift({
-  meta: { title: '首页' },
-  name: 'Dashboard',
-  path: '/dashboard',
-});
+const matchedRoutes = route.matched
 
 const handlePush = (path) => {
   router.push(path);
@@ -56,6 +50,33 @@ const handlePush = (path) => {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 24px;
+
+  &_title {
+    padding: 0 16px;
+    font-size: 28px;
+    color: #111927;
+  }
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+
+  &_item {
+    display: flex;
+    align-items: center;
+
+    &_title {
+      .v-btn {
+        padding: 0;
+      }
+    }
+  }
 }
 
 .link {
